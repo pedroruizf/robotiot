@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Control y Datos de ESEROVER</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f4f4f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .contenedor {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .boton {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .boton:hover {
+      background-color: #0056b3;
+    }
+    .boton.guardando {
+        background-color: #dc3545; /* Rojo para indicar que se está guardando */
+    }
+    .boton:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+    .fila {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    #datos-sensores {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+    }
+    #datos-sensores p {
+      margin: 5px 15px;
+      font-size: 16px;
+      color: #495057;
+    }
+    #datos-sensores span {
+      font-weight: bold;
+      color: #000;
+    }
+    .tiempo-control {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tiempo-control label {
+      font-size: 16px;
+      color: #495057;
+    }
+    .tiempo-control input[type="number"] {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 80px;
+      text-align: center;
+    }
+    /* Estilos para los logotipos */
+    .logo-container {
+      margin-bottom: 20px;
+      display: flex; /* Cambiado a flex para que estén en la misma fila */
+      flex-direction: row; /* Asegura que estén en fila */
+      align-items: center; /* Centrar logos verticalmente */
+      justify-content: center; /* Centrar logos horizontalmente */
+      flex-wrap: wrap; /* Permite que los logos se envuelvan en pantallas pequeñas */
+      gap: 20px; /* Espacio entre los logos */
+    }
+    .logo-principal {
+      max-width: 180px; /* Tamaño un poco más grande para el logo del club */
+      height: auto;
+    }
+    .logo-secundario {
+      max-width: 250px; /* Tamaño para el logo de ESERO/ESA/Parque */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <div class="logo-container">
+      <img src="logo_club_100.png" alt="Logo del Club" class="logo-principal">
+      <img src="esero-esa-parque.jpeg" alt="Logos ESERO ESA Parque de las Ciencias" class="logo-secundario">
+    </div>
+    <h1>Control de ESEROVER</h1>
+
+    <div class="tiempo-control">
+      <label for="tiempoInput">Duración del movimiento (ms):</label>
+      <input type="number" id="tiempoInput" value="1000" min="100" max="5000">
+    </div>
+
+    <div class="fila">
+      <button class="boton" onclick="enviar('/adelante')">⬆️ Adelante</button>
+    </div>
+    <div class="fila">
+      <button class="boton" onclick="enviar('/izquierda')">⬅️ Izquierda</button>
+      <button class="boton" onclick="enviar('/derecha')">➡️ Derecha</button>
+    </div>
+    <div class="fila">
+      <button class="boton" onclick="enviar('/atras')">⬇️ Atrás</button>
+    </div>
+  </div>
+
+  <div class="contenedor">
+    <h2>Datos de los Sensores</h2>
+
+    <div id="info-cabecera" style="margin-bottom: 15px; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
+      <p style="font-size: 16px; color: #495057; margin: 0;">🌍 Ubicación del Rover: <span id="ubicacion" style="font-weight: bold; color: #000;">--</span></p>
+    </div>
+    
+    <div id="header-data" style="margin-top: 15px; padding: 10px; background-color: #e9ecef; border-radius: 5px; text-align: left;">
+      <p style="font-size: 16px; color: #495057; margin-bottom: 5px;">📦 Cabeceras de la Respuesta:</p>
+      <div id="all-headers" style="font-size: 14px; color: #333;"></div>
+    </div>
+
+    <div class="fila">
+        <button id="toggleGuardadoBtn" class="boton">💾 Activar Guardado</button>
+        <button id="descargarBtn" class="boton" disabled>⬇️ Descargar CSV</button>
+    </div>
+
+    <div id="datos-sensores">
+      <p>🌡️ Temperatura: <span id="temp">--</span> °C</p>
+      <p>💧 Humedad: <span id="hum">--</span> %</p>
+      <p>💡 Luz: <span id="luz">--</span></p>
+      <p>🔊 Sonido: <span id="sonido">--</span></p>
+      <p>📏 Distancia: <span id="dist">--</span> cm</p>
+    </div>
+    <canvas id="graficaSensores"></canvas>
+  </div>
+
+  <script>
+    const MAX_DATA_POINTS = 10;
+    const ctx = document.getElementById('graficaSensores').getContext('2d');
+    const tiempoInput = document.getElementById('tiempoInput');
+    const allHeadersDiv = document.getElementById('all-headers'); // Get the new div
+
+    let guardarActivo = false;
+    let datosParaCSV = [];
+    const toggleBtn = document.getElementById('toggleGuardadoBtn');
+    const descargarBtn = document.getElementById('descargarBtn');
+
+    const datosGrafica = {
+      labels: [],
+      datasets: [
+        { label: 'Temperatura (°C)', data: [], borderColor: 'rgb(255, 99, 132)', tension: 0.1 },
+        { label: 'Humedad (%)', data: [], borderColor: 'rgb(54, 162, 235)', tension: 0.1 },
+        { label: 'Luz', data: [], borderColor: 'rgb(255, 206, 86)', tension: 0.1 },
+        { label: 'Sonido', data: [], borderColor: 'rgb(75, 192, 192)', tension: 0.1 },
+        { label: 'Distancia (cm)', data: [], borderColor: 'rgb(153, 102, 255)', tension: 0.1 }
+      ]
+    };
+
+    const miGrafica = new Chart(ctx, {
+      type: 'line',
+      data: datosGrafica,
+      options: {
+        scales: { y: { beginAtZero: true } },
+        animation: { duration: 500 }
+      }
+    });
+
+    function enviar(comando) {
+      const tiempo = tiempoInput.value;
+      //ip local de la placa 192.168.1.146
+     // si ponemos ip publica del router el control se hace desde internet
+      fetch(`http://192.168.1.146${comando}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: String(tiempo)
+      })
+        .then(response => console.log("Comando enviado:", comando, "con tiempo:", tiempo))
+        .catch(error => console.error("Error al enviar comando:", error));
+    }
+
+    // --- FUNCIÓN MODIFICADA ---
+    function actualizarDatos() {
+     //
+      fetch(`http://192.168.1.146/datos`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('La respuesta de la red no fue correcta');
+          }
+          
+          // Clear previous header data
+          allHeadersDiv.innerHTML = ''; 
+
+          // Iterate and display all headers
+          response.headers.forEach((value, name) => {
+            const p = document.createElement('p');
+            p.textContent = `${name}: ${value}`;
+            allHeadersDiv.appendChild(p);
+          });
+
+          // Extraer la cabecera de ubicación.
+          // ¡IMPORTANT! You must replace 'X-Device-Location' with the actual name 
+          // of the header your server sends (e.g., 'Location', 'X-Geo-Info', etc.).
+          const ubicacionHeader = response.headers.get('X-Device-Location'); 
+          document.getElementById('ubicacion').textContent = ubicacionHeader || 'No disponible';
+
+          // Devolver el cuerpo de la respuesta para el siguiente .then()
+          return response.text();
+        })
+        .then(data => {
+          console.log("Datos recibidos:", data);
+          const valores = data.split(',');
+
+          if (valores.length === 5) {
+            const temp = parseFloat(valores[0]).toFixed(2);
+            const hum = parseFloat(valores[1]).toFixed(2);
+
+            document.getElementById('temp').textContent = temp;
+            document.getElementById('hum').textContent = hum;
+            document.getElementById('luz').textContent = valores[2];
+            document.getElementById('sonido').textContent = valores[3];
+            document.getElementById('dist').textContent = valores[4];
+            
+            const tiempoActual = new Date().toLocaleTimeString();
+            
+            if (guardarActivo) {
+              const filaCSV = [ tiempoActual, temp, hum, valores[2], valores[3], valores[4] ];
+              datosParaCSV.push(filaCSV);
+              if (descargarBtn.disabled) {
+                  descargarBtn.disabled = false;
+              }
+            }
+
+            datosGrafica.labels.push(tiempoActual);
+            datosGrafica.datasets.forEach((dataset, index) => {
+              dataset.data.push(parseFloat(valores[index]) || 0);
+            });
+
+            if (datosGrafica.labels.length > MAX_DATA_POINTS) {
+              datosGrafica.labels.shift();
+              datosGrafica.datasets.forEach(dataset => dataset.data.shift());
+            }
+            miGrafica.update();
+          }
+        })
+        .catch(error => {
+          console.error("Error al obtener datos de sensores:", error);
+          // Actualizar la UI para mostrar que hubo un error
+          document.getElementById('ubicacion').textContent = 'Error de conexión';
+          allHeadersDiv.innerHTML = '<p style="color: red;">Error al cargar las cabeceras.</p>'; // Indicate error
+        });
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      guardarActivo = !guardarActivo;
+      if (guardarActivo) {
+        toggleBtn.textContent = '🤚 Detener Guardado';
+        toggleBtn.classList.add('guardando');
+      } else {
+        toggleBtn.textContent = '💾 Activar Guardado';
+        toggleBtn.classList.remove('guardando');
+      }
+    });
+
+    descargarBtn.addEventListener('click', () => {
+      if (datosParaCSV.length === 0) {
+        alert("No hay datos guardados para descargar.");
+        return;
+      }
+
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Timestamp,Temperatura,Humedad,Luz,Sonido,Distancia\n";
+      datosParaCSV.forEach(filaArray => {
+        let fila = filaArray.join(",");
+        csvContent += fila + "\n";
+      });
+
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "datos_cutebot.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      datosParaCSV = [];
+      descargarBtn.disabled = true;
+    });
+
+    setInterval(actualizarDatos, 5000);
+    window.onload = actualizarDatos;
+  </script>
+</body>
+</html>

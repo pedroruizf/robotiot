@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>ESEROVER</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --input-bg: #f0f0f0;
+      --canvas-bg: #ffffff;
+      --legend-color: #000000;
+    }
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --input-bg: #333;
+      --canvas-bg: #1e1e1e;
+      --legend-color: #e0e0e0;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 1rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .hidden { display: none; }
+    .auth, .controls, .charts, .recording { margin-bottom: 1rem; }
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      max-width: 300px;
+      margin: auto;
+    }
+
+    .btn-adelante { background-color: #4caf50; color: white; }
+    .btn-atras { background-color: #f44336; color: white; }
+    .btn-izquierda { background-color: #2196f3; color: white; }
+    .btn-derecha { background-color: #ff9800; color: white; }
+
+    canvas {
+      width: 100% !important;
+      height: 400px !important;
+      background-color: var(--canvas-bg);
+      border-radius: 6px;
+    }
+
+    button, select {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      border: none;
+      border-radius: 4px;
+      background-color: #444;
+      color: white;
+    }
+
+    input {
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      width: 100%;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border: none;
+      border-radius: 4px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logos img {
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+  @media screen and (max-width: 600px) {
+    .grid-buttons {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts, .recording, .controls, .auth, .stats {
+      padding: 0.5rem;
+    }
+
+    canvas {
+      height: 300px !important;
+    }
+
+    h2, h3, h4 {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+</head>
+<body class="dark">
+<div class="topbar">
+<h2>ESEROVER</h2>
+<button onclick="toggleTheme()">🌓 Cambiar Tema</button>
+</div>
+<div class="auth" id="auth">
+<h3>Conexión MQTT</h3>
+<input id="username" placeholder="Usuario" type="text"/>
+<input id="password" placeholder="Contraseña" type="password"/>
+<button onclick="connectMQTT()">Conectar</button>
+</div>
+<div class="controls hidden" id="controls">
+<h3>Control del Robot</h3>
+<div class="grid-buttons">
+<div></div>
+<button class="btn-adelante" onclick="sendCommand('adelante')">Adelante</button>
+<div></div>
+<button class="btn-izquierda" onclick="sendCommand('izquierda')">Izquierda</button>
+<button class="btn-atras" onclick="sendCommand('atras')">Atrás</button>
+<button class="btn-derecha" onclick="sendCommand('derecha')">Derecha</button>
+</div>
+</div>
+<div class="recording hidden" id="recording">
+<label for="sampleCount">Cantidad de muestras en pantalla:</label>
+<select id="sampleCount" onchange="updateCombinedChart()">
+  <option value="25" selected>25</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+  <option value="200">200</option>
+</select>
+<button id="recButton" onclick="toggleRecording()">▶ Iniciar Grabación</button>
+<button onclick="downloadCSV()">💾 Guardar CSV</button>
+<span id="recordingIndicator"></span>
+
+<button id="toggleStatsBtn" onclick="toggleStats()">📊 Mostrar Estadísticas</button>
+</div>
+<div class="charts hidden" id="charts">
+<h3>Datos en tiempo real</h3>
+<canvas id="combinedChart"></canvas>
+</div>
+<div class="stats hidden" id="stats">
+<h3>Valores Actuales</h3>
+<div id="latestValues"></div>
+<h4>Estadísticas (últimas muestras)</h4>
+<div id="statsValues"></div>
+</div>
+<div class="logos">
+<img alt="ESERO Spain Logo" src="https://exelearning.net/wp-content/uploads/2022/03/esero-esa-parque.jpeg"/>
+<!-- <img alt="Parque de las Ciencias Logo" src="https://www.parqueciencias.com/wp-content/uploads/2025/02/t-rex-llega-al-parque-de-las-ciencias-para-celebrar-el-28f-2048x1153.jpg"/>-->
+<img alt="Club Robótica Granada Logo" src="https://clubroboticagranada.github.io/images/logos/logo_club_100.png"/>
+</div>
+<script>
+    let client;
+    let combinedChart;
+    let recording = false;
+    let csvData = [];
+    let sampleLimit = 100;
+    const datasets = {
+      luz: [], sonido: [], temperatura: [], humedad: [], distancia: []
+    };
+
+    const sensorLabels = {
+      luz: 'Luz',
+      sonido: 'Sonido',
+      temperatura: 'Temperatura (ºC)',
+      humedad: 'Humedad (%)',
+      distancia: 'Distancia (cm)'
+    };
+
+    function getThemeColor() {
+      return document.body.classList.contains('dark') ? '#e0e0e0' : '#000000';
+    }
+    
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      
+      // Si la gráfica ya existe, actualiza los colores
+      if (combinedChart) {
+        const newColor = getThemeColor();
+        
+        combinedChart.options.plugins.legend.labels.color = newColor;
+        combinedChart.options.scales.x.title.color = newColor;
+        combinedChart.options.scales.x.ticks.color = newColor;
+        combinedChart.options.scales.y.title.color = newColor;
+        combinedChart.options.scales.y.ticks.color = newColor;
+        
+        combinedChart.update();
+      }
+    }
+
+    function connectMQTT() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      client = mqtt.connect('ws://213.194.129.165:9001', { username, password });
+
+      client.on('connect', () => {
+        client.subscribe('sensores/+');
+        document.getElementById('auth').classList.add('hidden');
+        document.getElementById('controls').classList.remove('hidden');
+        document.getElementById('charts').classList.remove('hidden');
+        document.getElementById('recording').classList.remove('hidden');
+                setupChart();
+      });
+
+      client.on('message', (topic, message) => {
+        const value = parseFloat(message.toString());
+        const key = topic.split('/')[1];
+        const timestamp = new Date();
+
+        if (datasets[key]) {
+          // Chart.js puede manejar 'NaN' para crear huecos en la gráfica.
+          datasets[key].push({ x: timestamp, y: value });
+          if (datasets[key].length > sampleLimit) datasets[key].shift();
+          updateCombinedChart();
+          updateStats();
+        }
+
+        if (recording) {
+          csvData.push({ timestamp: timestamp.getTime(), topic, value });
+        }
+      });
+    }
+
+    function sendCommand(command) {
+      if (client) {
+        client.publish('movimiento', command);
+      }
+    }
+
+    function setupChart() {
+      const ctx = document.getElementById('combinedChart').getContext('2d');
+      combinedChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: Object.keys(datasets).map(key => ({
+            label: sensorLabels[key] || key,
+            data: [],
+            fill: false,
+            borderWidth: 2
+          }))
+        },
+        options: {
+          animation: false,
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: getThemeColor()
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: {
+                unit: 'second',
+                tooltipFormat: 'HH:mm:ss',
+                displayFormats: {
+                  second: 'HH:mm:ss'
+                }
+              },
+              title: { display: true, text: 'Hora', color: getThemeColor() },
+              ticks: { color: getThemeColor() }
+            },
+            y: {
+              beginAtZero: false,
+              title: { display: true, text: 'Valor', color: getThemeColor() },
+              ticks: { color: getThemeColor() }
+            }
+          }
+        }
+      });
+    }
+
+    function updateCombinedChart() {
+      if (!combinedChart) return;
+      sampleLimit = parseInt(document.getElementById('sampleCount').value);
+      combinedChart.data.datasets.forEach(ds => {
+        const key = Object.keys(sensorLabels).find(k => sensorLabels[k] === ds.label);
+        if(key) {
+            ds.data = datasets[key].slice(-sampleLimit);
+        }
+      });
+      combinedChart.update();
+    }
+
+    function toggleRecording() {
+      recording = !recording;
+      document.getElementById('recButton').innerText = recording ? '⏹ Detener Grabación' : '▶ Iniciar Grabación';
+      document.getElementById('recordingIndicator').innerText = recording ? '⏺ Grabando...' : '';
+    }
+
+    function downloadCSV() {
+      const csv = ['timestamp,topic,value', ...csvData.map(d => `${d.timestamp},${d.topic},${d.value}`)].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sensores.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+</script>
+<script>
+function updateStats() {
+  const latestDiv = document.getElementById('latestValues');
+  const statsDiv = document.getElementById('statsValues');
+  latestDiv.innerHTML = '';
+  statsDiv.innerHTML = '';
+
+  Object.entries(datasets).forEach(([key, data]) => {
+    if (data.length === 0) return;
+
+    // Muestra el último valor recibido, sea cual sea (incluso NaN)
+    const lastValue = data[data.length - 1].y;
+    latestDiv.innerHTML += `<p><strong>${sensorLabels[key]}:</strong> ${lastValue}</p>`;
+
+    // Filtra los valores para quedarnos solo con los números válidos para las estadísticas
+    const numericValues = data.map(d => d.y).filter(v => !isNaN(v) && isFinite(v));
+
+    // Si hay datos numéricos válidos, calcula las estadísticas
+    if (numericValues.length > 0) {
+      const avg = (numericValues.reduce((a, b) => a + b, 0) / numericValues.length).toFixed(2);
+      const min = Math.min(...numericValues).toFixed(2);
+      const max = Math.max(...numericValues).toFixed(2);
+      statsDiv.innerHTML += `<p><strong>${sensorLabels[key]}</strong> | Promedio: ${avg}, Mín: ${min}, Máx: ${max}</p>`;
+    } else {
+      // Si no hay datos válidos, muestra guiones
+      statsDiv.innerHTML += `<p><strong>${sensorLabels[key]}</strong> | Promedio: --, Mín: --, Máx: --</p>`;
+    }
+  });
+}
+</script>
+<script>
+function toggleStats() {
+  const statsDiv = document.getElementById('stats');
+  const btn = document.getElementById('toggleStatsBtn');
+  if (statsDiv.classList.contains('hidden')) {
+    statsDiv.classList.remove('hidden');
+    btn.innerText = '🙈 Ocultar Estadísticas';
+  } else {
+    statsDiv.classList.add('hidden');
+    btn.innerText = '📊 Mostrar Estadísticas';
+  }
+}
+</script>
+</body>
+</html>

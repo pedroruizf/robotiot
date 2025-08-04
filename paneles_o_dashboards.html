@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>Paneles o dashboards | Robot IoT </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="author" content="Pedro Ruiz" />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.9 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="exe-web-site" id="exe-node-4"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<header id="header" ><div id="headerContent">Robot IoT</div></header>
+<nav id="siteNav">
+<ul>
+   <li><a href="index.html" class="daddy main-node">Robot IoT</a></li>
+   <li class="current-page-parent"><a href="iot_y_microblocks.html" class="current-page-parent daddy">IoT y microblocks</a>
+   <ul>
+      <li class="current-page-parent"><a href="servidor_mqtt.html" class="current-page-parent daddy">Servidor MQTT</a>
+      <ul>
+         <li><a href="placa_iot.html" class="no-ch">Placa IoT</a></li>
+         <li id="active"><a href="paneles_o_dashboards.html" class="active no-ch">Paneles o dashboards</a></li>
+      </ul>
+      </li>
+      <li><a href="control_wifi.html" class="no-ch">Control wifi</a></li>
+   </ul>
+   </li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+<a href="placa_iot.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="control_wifi.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">Paneles o dashboards</h1></header>
+<article class="iDevice_wrapper textIdevice" id="id5">
+<div class="iDevice emphasis0" >
+<div id="ta5_127_2" class="block iDevice_content">
+<div class="exe-text"><p>Los paneles o dashboards son interfaces dónde realizar publicaciones o subscricciones de forma gráfica y sencilla en el servidor.</p></div>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id3">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Pará dispositivos móviles</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<div id="ta3_130_2" class="block iDevice_content">
+<div class="exe-text"><p>Las dos aplicaciones que hemos encontrado de cierta calidad son estas, y no pueden configurar usuario y contraseña, por tanto no conectarán con un servidor mosquitto con autenticación.</p>
+<ul>
+<li><a href="https://play.google.com/store/search?q=iot+mqtt+panel&amp;c=apps&amp;hl=es" target="_blank" rel="noopener">IoT MQTT Panel</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=net.routix.mqttdash&amp;hl=es" target="_blank" rel="noopener">MQTT Dash</a></li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id9">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Paneles de control en python</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<div id="ta9_128_2" class="block iDevice_content">
+<div class="exe-text"><p>Con la ayuda de la IA, en concreto chat-GPT junto con el editor de python thonny se ha realizado el siguiente panel, que consta de dos ventanas una con el control de movimiento del robot y el guardado de datos de los sensores, y la segunda con el graficado de los datos de los sensores en tiempo real.</p>
+<table style="width: 63.0236%;" border="0">
+<tbody>
+<tr>
+<td style="width: 22.1204%;"><img src="dashboard01.png" alt="dashboard01" title="dashboard01" width="299" height="167" /></td>
+<td style="width: 40.9032%;"><img src="dashboard02.png" alt="dashboard02" title="dashboard02" width="601" height="493" /></td>
+</tr>
+</tbody>
+</table>
+<p>Para conseguir este panel debemos abrir el fichero del programa en python (.py) y abrirlo en el editor de python <a href="https://thonny.org/" target="_blank" rel="noopener">Thonny</a>, una vez abierto el fichero en Thonny debemos instalar las librerías paho-mqtt y matplotlib y ejecutar el programa.</p>
+<p><img src="dashboard_python.gif" alt="dashboardpython" title="dashboardpython" width="800" height="450" /></p>
+<p></p></div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper FileAttachIdeviceInc em_iDevice em_iDevice_assignment" id="id11">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header"><h1 class="iDeviceTitle">Programa python</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<div id="ta11_82" class="block iDevice_content">
+
+</div>
+<ul class='exeFileList'><li><a href='dashboard05_distancia.py' target='_blank'>dashboard05_distancia.py<span> (Ventana nueva)</span></a></li>
+</ul></div>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id13">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Paneles webs</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<div id="ta13_127_2" class="block iDevice_content">
+<div class="exe-text"><p>También podemos realizar páginas webs en forma de paneles o dashborads para mandar topics y valores o para recibir topics y valores del robot. En concreto esta ha sido realizada a través de Chat GPT usando el siguiente prompt, y algunas mejoras posteriores:</p>
+<p><cite>Quiero hacer un entorno web que controle un robot a través de mqtt con un servidor mosquitto alojado en la ip pública xxx.xxx.xxx.xxx, el servidor necesita autenticación con usuarios. En la web debe aparecer cuatro botones para publicar topics de movimiento del robot: botón adelante con topic movimiento valor adelante, botón atras con topic movimiento valor atras, botón derecha con topic movimiento valor derecha, botón izquierda con topic movimiento valor izquierda. Además deben representarse en tiempo real las gráficas de los sensores a la que la web está suscrito, en un sólo interfaz de gráficas. Los topics de las gráficas son: luz (topic sensores/luz), sonido (topic sensores/sonido), temperatura (topic sensores/temperatura), humedad (topic sensores/humedad) y distancia (topic sensores/distancia). Además debe tener un botón para guardado de datos en formato csv, y alguna animación que indique que está grabando datos.</cite></p>
+<p><cite><img src="dashboard03.png" alt="dashboard03" title="dashboard03" width="800" height="541" /></cite></p>
+<p></p>
+<p></p></div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper FileAttachIdeviceInc em_iDevice em_iDevice_assignment" id="id14">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header"><h1 class="iDeviceTitle">panel de control en thml</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<div id="ta14_82" class="block iDevice_content">
+
+</div>
+<ul class='exeFileList'><li><a href='control_robot_mqtt_04.html' target='_blank'>control_robot_mqtt_04.html<span> (Ventana nueva)</span></a></li>
+</ul></div>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+<a href="placa_iot.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="control_wifi.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+</div>
+<p id="made-with-eXe"><a href="https://exelearning.net/" target="_blank" rel="noopener"><span>Creado con eXeLearning<span> (Ventana nueva)</span></span></a></p><script type="text/javascript" src="_style_js.js"></script></body></html>
