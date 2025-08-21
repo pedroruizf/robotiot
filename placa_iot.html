@@ -5,9 +5,9 @@
 <link rel="stylesheet" type="text/css" href="content.css" />
 <link rel="stylesheet" type="text/css" href="nav.css" />
 <meta http-equiv="content-type" content="text/html;  charset=utf-8" />
-<title>Placa IoT | Robot IoT </title>
+<title>Placa IoT | Robot IoT (Cutebot) </title>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-<meta name="author" content="Pedro Ruiz" />
+<meta name="author" content="Pedro Ruiz Fernández" />
 <link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
 <meta name="generator" content="eXeLearning 2.9 - exelearning.net" />
 <!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
@@ -15,25 +15,22 @@
 <script type="text/javascript" src="common_i18n.js"></script>
 <script type="text/javascript" src="common.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
-<body class="exe-web-site" id="exe-node-3"><script type="text/javascript">document.body.className+=" js"</script>
+    </head>
+<body class="exe-web-site" id="exe-node-67"><script type="text/javascript">document.body.className+=" js"</script>
 <div id="content">
 <p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
-<header id="header" ><div id="headerContent">Robot IoT</div></header>
+<header id="header" ><div id="headerContent">Robot IoT (Cutebot)</div></header>
 <nav id="siteNav">
 <ul>
-   <li><a href="index.html" class="daddy main-node">Robot IoT</a></li>
-   <li class="current-page-parent"><a href="iot_y_microblocks.html" class="current-page-parent daddy">IoT y microblocks</a>
+   <li><a href="index.html" class="daddy main-node">Robot IoT (Cutebot)</a></li>
+   <li class="current-page-parent"><a href="mqtt.html" class="current-page-parent daddy">MQTT</a>
    <ul>
-      <li class="current-page-parent"><a href="servidor_mqtt.html" class="current-page-parent daddy">Servidor MQTT</a>
-      <ul>
-         <li id="active"><a href="placa_iot.html" class="active no-ch">Placa IoT</a></li>
-         <li><a href="paneles_o_dashboards.html" class="no-ch">Paneles o dashboards</a></li>
-      </ul>
-      </li>
-      <li><a href="control_wifi.html" class="no-ch">Control wifi</a></li>
+      <li><a href="servidor_mqtt.html" class="no-ch">Servidor MQTT</a></li>
+      <li id="active"><a href="placa_iot.html" class="active no-ch">Placa IoT</a></li>
+      <li><a href="paneles_o_dashboards.html" class="no-ch">Paneles o dashboards</a></li>
    </ul>
    </li>
+   <li><a href="servidor_web.html" class="no-ch">Servidor Web</a></li>
 </ul>
 </nav>
 <div id='topPagination'>
@@ -44,50 +41,50 @@
 <div id="main-wrapper">
 <section id="main">
 <header id="nodeDecoration"><h1 id="nodeTitle">Placa IoT</h1></header>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id6">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id248">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">microSTEAMakers</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta6_128_2" class="block iDevice_content">
+<div id="ta248_128_2" class="block iDevice_content">
 <div class="exe-text"><p>La placa que se conectará al servidor MQTT será la microSTEAMakers, que es una ESP32 con formato micro:bit y por tanto con capacidades wifi. Está placa está programada con microblocks que tiene librerías wifi y mqtt.</p></div>
 </div>
 </div>
 </div>
 </div>
 </article>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id7">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id249">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Programa sin autenticación</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta7_129_2" class="block iDevice_content">
-<div class="exe-text"><p>El programa se subscribe a temas publicados por un dashboard con los controles de movimiento y publica temas relacionados con los sensores y sus valores. El programa no presenta autenticación.</p>
-<p><img src="programa_iot.png" alt="programa iot" title="programa iot" width="800" height="864" /></p></div>
+<div id="ta249_129_2" class="block iDevice_content">
+<div class="exe-text"><p>El programa se subscribe a temas publicados por un dashboard con los controles de movimiento y publica temas relacionados con los sensores y sus valores. El programa no presenta autenticación. Debemos indicar los datos de comexión a la red wifi, y la ip pública o local de dónde está situado el broker (mosquitto en nuestro caso).</p>
+<p><img src="programa_iot_editado.png" alt="programa iot" title="programa iot" width="800" height="864" /></p></div>
 </div>
 </div>
 </div>
 </div>
 </article>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id8">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id250">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Programa con autenticación</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta8_127_2" class="block iDevice_content">
-<div class="exe-text"><p>Este programa presenta identificación de usuarios y añade a la publicación de datos de sensores la distancia de cutebot.</p>
-<p><img src="programa_iot2.png" alt="programa iot2" title="programa iot2" width="800" height="852" /></p></div>
+<div id="ta250_127_2" class="block iDevice_content">
+<div class="exe-text"><p>Este programa presenta identificación de usuarios y añade a la publicación de datos de sensores la distancia de cutebot. Además debemos indicar los datos de conexión a red wifi, la ip pública o local de nuestro broker (mosquitto en nuestro caso), y como es autenticada la conexión un nombre de usuario y contraseña válido en nuestro servidor mosquitto.</p>
+<p><img src="programa_iot2_editado.png" alt="programa iot2" title="programa iot2" width="800" height="852" /></p></div>
 </div>
 </div>
 </div>
 </div>
 </article>
-<article class="iDevice_wrapper FileAttachIdeviceInc em_iDevice em_iDevice_assignment" id="id12">
+<article class="iDevice_wrapper FileAttachIdeviceInc em_iDevice em_iDevice_assignment" id="id251">
 <div class="iDevice emphasis1" >
-<header class="iDevice_header"><h1 class="iDeviceTitle">Programas</h1></header>
+<header class="iDevice_header" style="background-image:url(icon_assignment.png)"><h1 class="iDeviceTitle">Programa con autenticación</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta12_82" class="block iDevice_content">
+<div id="ta251_82" class="block iDevice_content">
 
 </div>
 <ul class='exeFileList'><li><a href='mqtt_mosquitto_cutebot2.ubp' target='_blank'>mqtt_mosquitto_cutebot2.ubp<span> (Ventana nueva)</span></a></li>

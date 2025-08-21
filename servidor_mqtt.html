@@ -5,9 +5,9 @@
 <link rel="stylesheet" type="text/css" href="content.css" />
 <link rel="stylesheet" type="text/css" href="nav.css" />
 <meta http-equiv="content-type" content="text/html;  charset=utf-8" />
-<title>Servidor MQTT | Robot IoT </title>
+<title>Servidor MQTT | Robot IoT (Cutebot) </title>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-<meta name="author" content="Pedro Ruiz" />
+<meta name="author" content="Pedro Ruiz Fernández" />
 <link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
 <meta name="generator" content="eXeLearning 2.9 - exelearning.net" />
 <!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
@@ -15,41 +15,38 @@
 <script type="text/javascript" src="common_i18n.js"></script>
 <script type="text/javascript" src="common.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
-<body class="exe-web-site" id="exe-node-2"><script type="text/javascript">document.body.className+=" js"</script>
+    </head>
+<body class="exe-web-site" id="exe-node-66"><script type="text/javascript">document.body.className+=" js"</script>
 <div id="content">
 <p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
-<header id="header" ><div id="headerContent">Robot IoT</div></header>
+<header id="header" ><div id="headerContent">Robot IoT (Cutebot)</div></header>
 <nav id="siteNav">
 <ul>
-   <li><a href="index.html" class="daddy main-node">Robot IoT</a></li>
-   <li class="current-page-parent"><a href="iot_y_microblocks.html" class="current-page-parent daddy">IoT y microblocks</a>
+   <li><a href="index.html" class="daddy main-node">Robot IoT (Cutebot)</a></li>
+   <li class="current-page-parent"><a href="mqtt.html" class="current-page-parent daddy">MQTT</a>
    <ul>
-      <li id="active"><a href="servidor_mqtt.html" class="active daddy">Servidor MQTT</a>
-      <ul>
-         <li><a href="placa_iot.html" class="no-ch">Placa IoT</a></li>
-         <li><a href="paneles_o_dashboards.html" class="no-ch">Paneles o dashboards</a></li>
-      </ul>
-      </li>
-      <li><a href="control_wifi.html" class="no-ch">Control wifi</a></li>
+      <li id="active"><a href="servidor_mqtt.html" class="active no-ch">Servidor MQTT</a></li>
+      <li><a href="placa_iot.html" class="no-ch">Placa IoT</a></li>
+      <li><a href="paneles_o_dashboards.html" class="no-ch">Paneles o dashboards</a></li>
    </ul>
    </li>
+   <li><a href="servidor_web.html" class="no-ch">Servidor Web</a></li>
 </ul>
 </nav>
 <div id='topPagination'>
 <nav class="pagination noprt">
-<a href="iot_y_microblocks.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="placa_iot.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+<a href="mqtt.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="placa_iot.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
 </nav>
 </div>
 <div id="main-wrapper">
 <section id="main">
 <header id="nodeDecoration"><h1 id="nodeTitle">Servidor MQTT</h1></header>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id1">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id245">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">MQTT</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta1_128_2" class="block iDevice_content">
+<div id="ta245_128_2" class="block iDevice_content">
 <div class="exe-text"><p>MQTT (Message Queuing Telemetry Transport) es un protocolo de comunicación que permite que los dispositivos hablen entre sí de forma ligera y rápida, ideal para el Internet de las Cosas (IoT). Las comunicaciones funcionan entre dispositivos funcionan mediante publicaciones de mensajes con temática y valores y subscriciones a los mismos de otros dispositivos que lo reciben y procesan.</p>
 <p><a href="https://www.luisllamas.es/que-es-mqtt-su-importancia-como-protocolo-iot/" target="_blank" rel="noopener">¿Que es mqtt?</a>: por Luis llamas</p></div>
 </div>
@@ -57,12 +54,12 @@
 </div>
 </div>
 </article>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id2">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id246">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Servidor o broker MQTT</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta2_129_2" class="block iDevice_content">
+<div id="ta246_129_2" class="block iDevice_content">
 <div class="exe-text"><p>El servidor de mqtt lo vamos a instalar en una raspberry pi, en concreto se llama mosquitto, lo he realizado siguiendo minuciosamente los pasos explicados en la web de Luis Llamas. <a href="https://www.luisllamas.es/como-instalar-mosquitto-el-broker-mqtt/" target="_blank" rel="noopener">https://www.luisllamas.es/como-instalar-mosquitto-el-broker-mqtt/.</a> </p>
 <p><span style="font-size: 14pt;"><strong>Instalación de Mosquitto</strong></span></p>
 <p>Para ello en un terminal de raspberry os:</p>
@@ -71,7 +68,7 @@
 <p><code>sudo apt install mosquitto mosquitto-clients</code></p>
 <p>Ahora instalamos el servidor y las herramientas de cliente.</p>
 <p><code></code></p>
-<p>Para verificar el estado del servidor puedes usar la siguiente orden;</p>
+<p>Para verificar el estado del servidor puedes usar la siguiente orden:</p>
 <p><code>sudo systemctl status mosquitto</code></p>
 <p><span style="font-size: 14pt;"><strong>Configuración del servidor</strong></span></p>
 <p>Además hay que modificar el archivo de configuración de mosquitto, en mi caso con el editor de texto nano:</p>
@@ -107,12 +104,12 @@
 </div>
 </div>
 </article>
-<article class="iDevice_wrapper textIdevice em_iDevice" id="id4">
+<article class="iDevice_wrapper textIdevice em_iDevice" id="id247">
 <div class="iDevice emphasis1" >
 <header class="iDevice_header iDevice_header_noIcon"><h1 class="iDeviceTitle">Router</h1></header>
 <div class="iDevice_inner">
 <div class="iDevice_content_wrapper">
-<div id="ta4_131_2" class="block iDevice_content">
+<div id="ta247_131_2" class="block iDevice_content">
 <div class="exe-text"><p>En el enrutador lo primero que debemos hacer es abrir las características de mi dispositivo en la red.</p>
 <p><img src="router01.png" alt="router 01" title="router 01" width="599" height="386" /></p>
 <p>Ahora debemos reservar una ip local para el dispositivo.</p>
@@ -136,7 +133,7 @@
 </div>
 <div id='bottomPagination'>
 <nav class="pagination noprt">
-<a href="iot_y_microblocks.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="placa_iot.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+<a href="mqtt.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="placa_iot.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
 </nav>
 </div>
 </div>
